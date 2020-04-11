@@ -490,6 +490,12 @@ jobs:
           mkdir -p breakpad/out/Default/
           cp breakpad-cache/dump_syms breakpad/out/Default/dump_syms
 
+      - name: Free disk space.
+        run: |
+          # Workaround to get more disk space.
+          sudo rm -rf /__t/*
+          df -h
+
       - name: Telegram Desktop build.
         if: env.ONLY_CACHE == 'false'
         run: |
@@ -513,6 +519,7 @@ jobs:
       - name: Check.
         if: env.ONLY_CACHE == 'false'
         run: |
+          df -h
           filePath="$REPO_NAME/out/Debug/bin/Telegram"
           if test -f "$filePath"; then
             echo "Build successfully done! :)"
